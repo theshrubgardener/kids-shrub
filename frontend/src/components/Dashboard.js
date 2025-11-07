@@ -16,14 +16,6 @@ function Dashboard() {
     return <Navigate to="/" />;
   }
 
-  const handleSymbolChange = (symbol) => {
-    setSymbol(symbol.split(':')[1] || symbol);
-  };
-
-  const handlePriceUpdate = (price) => {
-    setPrice(price);
-  };
-
   const getLivePrice = async (sym) => {
     try {
       const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}`;
@@ -95,7 +87,7 @@ function Dashboard() {
       <h1>ShrubFund Kids Dashboard</h1>
       <div style={{display: 'flex'}}>
         <div style={{flex: '0 0 70%', height: '400px'}}>
-          <TradingViewWidget onSymbolChange={handleSymbolChange} onPriceUpdate={handlePriceUpdate} />
+          <TradingViewWidget />
         </div>
         <div style={{flex: '0 0 30%', padding: '10px'}}>
           <div>Cash: ${userData.cash.toFixed(2)}</div>
@@ -117,8 +109,11 @@ function Dashboard() {
             ))}
           </ul>
           <h3>Trade Panel</h3>
-          <div>Symbol: {symbol}</div>
-          <div>Price: ${price.toFixed(2)}</div>
+          <div>Symbol: <input value={symbol} onChange={(e) => setSymbol(e.target.value)} /></div>
+          <div>Price: ${price.toFixed(2)} <button onClick={async () => {
+            const p = await getLivePrice(symbol);
+            if (p) setPrice(p);
+          }}>Update Price</button></div>
           <input type="number" value={qty} onChange={(e) => setQty(parseInt(e.target.value))} min="1" />
           <button onClick={() => handleTrade('buy')}>Buy</button>
           <button onClick={() => handleTrade('sell')}>Sell</button>

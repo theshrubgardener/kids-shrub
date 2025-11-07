@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import TradingViewWidget from './TradingViewWidget';
 import { encrypt } from '../utils';
 
 function Dashboard() {
-  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('accountData')));
+  const [userData, setUserData] = useState(() => {
+    const data = localStorage.getItem('accountData');
+    return data ? JSON.parse(data) : null;
+  });
   const [symbol, setSymbol] = useState('AAPL');
   const [price, setPrice] = useState(0);
   const [qty, setQty] = useState(1);
+
+  if (!userData) {
+    return <Navigate to="/" />;
+  }
 
   const handleSymbolChange = (symbol) => {
     setSymbol(symbol.split(':')[1] || symbol);

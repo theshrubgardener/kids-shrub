@@ -1,0 +1,23 @@
+[
+  {
+    "id": "alice",
+    "password": "password",
+    "cash": 10000,
+    "holdings": {},
+    "history": []
+  },
+  {
+    "id": "bob",
+    "password": "password",
+    "cash": 10000,
+    "holdings": {},
+    "history": []
+  },
+  {
+    "id": "charlie",
+    "password": "password",
+    "cash": 10000,
+    "holdings": {},
+    "history": []
+  }
+]

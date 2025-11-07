@@ -38,19 +38,22 @@ function TradingViewWidget({ onSymbolChange, onPriceUpdate }) {
     const interval = setInterval(() => {
       const priceEl = document.querySelector('.valueValue-l31H9iuA');
       const symbolEl = document.querySelector('.js-button-text.text-GwQQdU8S.text-cq__ntSC');
+      console.log('Price el:', priceEl, 'Symbol el:', symbolEl);
       if (priceEl && onPriceUpdate) {
         const price = parseFloat(priceEl.textContent);
+        console.log('Price:', price);
         if (!isNaN(price)) {
           onPriceUpdate(price);
         }
       }
       if (symbolEl && onSymbolChange) {
         const symbol = symbolEl.textContent;
+        console.log('Symbol:', symbol);
         if (symbol) {
           onSymbolChange(symbol);
         }
       }
-    }, 1000);
+    }, 2000);
 
     return () => {
       clearInterval(interval);

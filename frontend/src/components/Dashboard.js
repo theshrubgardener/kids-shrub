@@ -18,10 +18,31 @@ function Dashboard() {
 
   const getLivePrice = async (sym) => {
     try {
-      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      return data.chart.result[0].meta.regularMarketPrice;
+      // Try Alpha Vantage for stocks
+      const alphaUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=demo`;
+      const alphaResponse = await fetch(alphaUrl);
+      const alphaData = await alphaResponse.json();
+      if (alphaData['Global Quote'] && alphaData['Global Quote']['05. price']) {
+        return parseFloat(alphaData['Global Quote']['05. price']);
+      }
+
+      // If not, try CoinGecko for crypto
+      const cryptoMap = {
+        'BTC': 'bitcoin',
+        'ETH': 'ethereum',
+        'ADA': 'cardano',
+        'SOL': 'solana',
+        'DOGE': 'dogecoin',
+      };
+      const id = cryptoMap[sym.toUpperCase()] || sym.toLowerCase();
+      const coinUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`;
+      const coinResponse = await fetch(coinUrl);
+      const coinData = await coinResponse.json();
+      if (coinData[id] && coinData[id].usd) {
+        return coinData[id].usd;
+      }
+
+      return null;
     } catch (error) {
       console.error('Error fetching price:', error);
       return null;

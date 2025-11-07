@@ -143,6 +143,9 @@ function Dashboard() {
           <button onClick={handleSave}>Save Account</button>
         </div>
       </div>
+      <div style={{textAlign: 'center', marginTop: '20px', fontSize: '12px', color: '#666'}}>
+        Version: 9a34016
+      </div>
     </div>
   );
 }

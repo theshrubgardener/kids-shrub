@@ -16,12 +16,37 @@ function Dashboard() {
     return <Navigate to="/" />;
   }
 
-  const handleSymbolChange = (symbol) => {
-    setSymbol(symbol.split(':')[1] || symbol);
-  };
+  const getLivePrice = async (sym) => {
+    try {
+      // Try Alpha Vantage for stocks
+      const alphaUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=demo`;
+      const alphaResponse = await fetch(alphaUrl);
+      const alphaData = await alphaResponse.json();
+      if (alphaData['Global Quote'] && alphaData['Global Quote']['05. price']) {
+        return parseFloat(alphaData['Global Quote']['05. price']);
+      }
 
-  const handlePriceUpdate = (price) => {
-    setPrice(price);
+      // If not, try CoinGecko for crypto
+      const cryptoMap = {
+        'BTC': 'bitcoin',
+        'ETH': 'ethereum',
+        'ADA': 'cardano',
+        'SOL': 'solana',
+        'DOGE': 'dogecoin',
+      };
+      const id = cryptoMap[sym.toUpperCase()] || sym.toLowerCase();
+      const coinUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`;
+      const coinResponse = await fetch(coinUrl);
+      const coinData = await coinResponse.json();
+      if (coinData[id] && coinData[id].usd) {
+        return coinData[id].usd;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error fetching price:', error);
+      return null;
+    }
   };
 
 
@@ -83,7 +108,7 @@ function Dashboard() {
       <h1>ShrubFund Kids Dashboard</h1>
       <div style={{display: 'flex'}}>
         <div style={{flex: '0 0 70%', height: '400px'}}>
-          <TradingViewWidget onSymbolChange={handleSymbolChange} onPriceUpdate={handlePriceUpdate} />
+          <TradingViewWidget />
         </div>
         <div style={{flex: '0 0 30%', padding: '10px'}}>
           <div>Cash: ${userData.cash.toFixed(2)}</div>
@@ -105,6 +130,11 @@ function Dashboard() {
             ))}
           </ul>
           <h3>Trade</h3>
+          <div>Symbol: <input value={symbol} onChange={(e) => setSymbol(e.target.value)} /></div>
+          <div>Price: ${price.toFixed(2)} <button onClick={async () => {
+            const p = await getLivePrice(symbol);
+            if (p) setPrice(p);
+          }}>Update Price</button></div>
           <input type="number" placeholder="Quantity" value={qty} onChange={(e) => setQty(parseInt(e.target.value) || 1)} min="1" />
           <br />
           <button onClick={() => handleTrade('buy')}>Buy</button>

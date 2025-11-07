@@ -1,47 +1,46 @@
 import React, { useEffect, useRef } from 'react';
 
-function TradingViewWidget({ onSymbolChange, onPriceUpdate }) {
+function TradingViewWidget() {
   const container = useRef();
 
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://s3.tradingview.com/tv.js";
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+    script.type = "text/javascript";
     script.async = true;
-    script.onload = () => {
-      if (window.TradingView && container.current) {
-        new window.TradingView.widget({
-          container: container.current,
-          symbol: "NASDAQ:AAPL",
-          interval: "D",
-          timezone: "Etc/UTC",
-          theme: "dark",
-          style: "1",
-          locale: "en",
-          toolbar_bg: "#f1f3f6",
-          enable_publishing: false,
-          allow_symbol_change: true,
-          save_image: false,
-          height: "100%",
-          backgroundColor: "#0F0F0F",
-          gridColor: "rgba(242, 242, 242, 0.06)",
-          onSymbolChange: onSymbolChange,
-          onChartReady: (widget) => {
-            widget.subscribeToRealtimePrice(onPriceUpdate);
-          },
-        });
-      }
-    };
-    document.head.appendChild(script);
-
-    return () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, [onSymbolChange, onPriceUpdate]);
+    script.innerHTML = `
+      {
+        "allow_symbol_change": true,
+        "calendar": false,
+        "details": false,
+        "hide_side_toolbar": true,
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "hide_volume": false,
+        "hotlist": false,
+        "interval": "D",
+        "locale": "en",
+        "save_image": true,
+        "style": "1",
+        "symbol": "NASDAQ:AAPL",
+        "theme": "dark",
+        "timezone": "Etc/UTC",
+        "backgroundColor": "#0F0F0F",
+        "gridColor": "rgba(242, 242, 242, 0.06)",
+        "watchlist": [],
+        "withdateranges": false,
+        "compareSymbols": [],
+        "studies": [],
+        "autosize": true
+      }`;
+    container.current.appendChild(script);
+  }, []);
 
   return (
-    <div ref={container} style={{ height: "100%", width: "100%" }} />
+    <div className="tradingview-widget-container" ref={container} style={{ height: "100%", width: "100%" }}>
+      <div className="tradingview-widget-container__widget" style={{ height: "calc(100% - 32px)", width: "100%" }}></div>
+      <div className="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener nofollow" target="_blank"><span className="blue-text">AAPL stock chart</span></a><span className="trademark"> by TradingView</span></div>
+    </div>
   );
 }
 

@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/kids-shrub/static/css/main.f855e6bc.css",
+    "main.js": "/kids-shrub/static/js/main.e1926a85.js",
+    "static/js/453.d7446e4a.chunk.js": "/kids-shrub/static/js/453.d7446e4a.chunk.js",
+    "index.html": "/kids-shrub/index.html",
+    "main.f855e6bc.css.map": "/kids-shrub/static/css/main.f855e6bc.css.map",
+    "main.e1926a85.js.map": "/kids-shrub/static/js/main.e1926a85.js.map",
+    "453.d7446e4a.chunk.js.map": "/kids-shrub/static/js/453.d7446e4a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.e1926a85.js"
+  ]
+}

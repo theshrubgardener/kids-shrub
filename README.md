@@ -1,115 +1,77 @@
 # ShrubFund Kids - Educational Paper Trading Site
 
-A secure, fun, educational paper-trading platform for kids to practice trading with real-time market prices.
+A fun, educational paper-trading platform for kids to practice trading with real-time market prices. Fully client-side with encrypted local account files.
 
 ## Features
 
-- User authentication with pre-created accounts
-- Live TradingView charts
-- Real-time price updates
+- Start new account or load existing encrypted account file
+- Live TradingView charts with auto-sync symbol and price updates
 - Paper trading with $10,000 starting cash
-- Portfolio tracking
+- Portfolio tracking with holdings table
 - Trade history
+- Encrypted account files (.shrub) for saving progress
 
 ## Tech Stack
 
 - Frontend: React with React Router
-- Backend: Node.js with Express
-- Charts: TradingView Widget
-- Hosting: GitHub Pages (frontend), Vercel (backend)
+- Charts: TradingView Widget API
+- Data Storage: Encrypted local files
+- Hosting: GitHub Pages
 
-## Setup
+## How It Works
 
-### Prerequisites
+1. **Start New Account:** Creates a new account with $10,000 cash
+2. **Load Account:** Upload a previously saved .shrub file to resume trading
+3. **Trade:** View live charts, enter quantity, buy/sell stocks
+4. **Save:** Download encrypted account file to preserve progress
 
-- Node.js
-- Git
+Prices are fetched in real-time from Yahoo Finance. Account data is stored locally and encrypted for security.
 
-### Installation
+## Deployment
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/theshrubgardener/kids-shrub.git
-   cd kids-shrub
-   ```
+The site is deployed on GitHub Pages at https://theshrubgardener.github.io/kids-shrub
 
-2. Install frontend dependencies:
+To deploy updates:
+
+1. Install dependencies:
    ```bash
    cd frontend
    npm install
    npm install --save-dev gh-pages
-   cd ..
    ```
 
-3. Install backend dependencies:
+2. Build and deploy:
    ```bash
-   cd backend
-   npm install
-   cd ..
-   ```
-
-### Running Locally
-
-1. Start the backend:
-   ```bash
-   cd backend
-   npm start
-   ```
-   Backend runs on http://localhost:3001
-
-2. Start the frontend:
-   ```bash
-   cd frontend
-   npm start
-   ```
-   Frontend runs on http://localhost:3000
-
-### Test Accounts
-
-- alice / password
-- bob / password
-- charlie / password
-
-## Deployment
-
-### Frontend (GitHub Pages)
-
-1. Build the frontend:
-   ```bash
-   cd frontend
    npm run build
-   ```
-
-2. Deploy to GitHub Pages:
-   ```bash
    npm run deploy
    ```
 
-### Backend (Vercel)
+3. In GitHub repo settings, ensure Pages serves from gh-pages branch
 
-1. Install Vercel CLI:
+## Running Locally
+
+1. Clone the repository:
    ```bash
-   npm install -g vercel
+   git clone https://github.com/theshrubgardener/kids-shrub.git
+   cd kids-shrub/frontend
    ```
 
-2. Deploy backend:
+2. Install dependencies:
    ```bash
-   cd backend
-   vercel
+   npm install
+   ```
+
+3. Start development server:
+   ```bash
+   npm start
    ```
 
 ## Security
 
-- Prices are validated against live market data
-- Rate limiting on trades (1 per second per user)
-- No manual price editing allowed
-- All trades logged
-
-## API Endpoints
-
-- POST /api/login - User login
-- GET /api/user/:id - Get user data
-- POST /api/trade - Execute trade
+- Account files are encrypted using AES encryption
+- No personal data stored online
+- Prices fetched directly from Yahoo Finance
+- All trading logic runs client-side
 
 ## License
 
